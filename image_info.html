@@ -28,6 +28,16 @@
         icon: "resolution.png",
         label: function() {
             return this.name||"Image info";
+        },
+        inputLabels: function () {
+            return `${this.dataType}.${this.data}`;
+        },
+        oneditprepare: function () {
+        $('#node-input-data').typedInput({
+                default: 'msg',
+                typeField: $("#node-input-dataType"),
+                types: ['msg']
+            });
         }
     });
 </script>

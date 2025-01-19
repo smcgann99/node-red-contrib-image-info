@@ -14,16 +14,29 @@
  * limitations under the License.
  **/
  module.exports = function(RED) {
-    const settings = RED.settings;  
-    const sizeOf = require('image-size');
+    var settings = RED.settings;  
+    var sizeOf = require('image-size');
    
-    function ImageInfoNode(n) {
-        RED.nodes.createNode(this,n);
-        
-        const node = this;
+    function ImageInfoNode(config) { 
+        RED.nodes.createNode(this, config);
+        this.data       = config.data || "";
+        this.dataType   = config.dataType || "msg";
+        var node = this;
+        let buffer = null;
+        let image = null;
         
         node.on("input", function(msg) { 
-         let buffer = null;
+             // Get the image from the location specified in the typedinput field
+             RED.util.evaluateNodeProperty(node.data, node.dataType, node, msg, (err, value) => {
+                if (err) {
+                    handleError(err, msg, "Invalid source");
+                    return;
+                } else {
+                    image = value;
+                }
+            });
+        
+         
  
          function isBase64(v) {
           if (v instanceof Boolean || typeof v === 'boolean') { return false }
@@ -31,16 +44,16 @@
           return (new RegExp('^' + regex + '$', 'gi')).test(v)
           }
             
-            if (Buffer.isBuffer(msg.payload)) {
-                buffer = msg.payload;
+            if (Buffer.isBuffer(image)) {
+                buffer = image;
             }
             else {
-                if (typeof msg.payload === 'string') { 
-                    if (isBase64(msg.payload)) {
-                         buffer = Buffer.from(msg.payload, 'base64')
+                if (typeof image === 'string') { 
+                    if (isBase64(image)) {
+                         buffer = Buffer.from(image, 'base64')
                     }
                     else {
-                        buffer = Buffer.from(msg.payload);
+                        buffer = Buffer.from(image);
                     }
                 }
             }
