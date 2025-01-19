@@ -3,9 +3,7 @@
     "version"      : "0.1.1",
     "description"  : "A Node Red node to get information about an image",
     "dependencies": {
-       "image-size": "0.6.2",
-       "is-base64": "0.0.4",
-       "base64-js": "1.2.3"
+       "image-size": "0.6.2"
     },
     "author": {
         "name": "Bart Butenaers"
