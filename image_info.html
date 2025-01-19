@@ -16,6 +16,12 @@
         color: '#a6bbcf',
         defaults: {
             name: {value:""}
+            data: {
+                value: "payload",
+                required: true,
+                validate: RED.validators.typedInput("dataType")
+            },
+            dataType: { value: "msg" },
         },
         inputs:1,
         outputs:1,
@@ -26,11 +32,18 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="image-info">
-    <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+<script type="text/html" data-template-name="image-info">
+  <div class="form-row">
+        <label style="padding-top: 8px" for="node-input-data"><i class="fa fa-ellipsis-h"></i> Property</label>
+        <input type="text" id="node-input-data" style="width:70%">
+        <input type="hidden" id="node-input-dataType">
     </div>
+  
+  <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  
 </script>
 
 <script type="text/x-red" data-help-name="image-info">
