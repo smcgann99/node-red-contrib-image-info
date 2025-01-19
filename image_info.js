@@ -14,18 +14,22 @@
  * limitations under the License.
  **/
  module.exports = function(RED) {
-    var settings = RED.settings;  
-    var sizeOf = require('image-size');
-    var isBase64 = require('is-base64');
-    var base64js = require('base64-js');
-
+    const settings = RED.settings;  
+    const sizeOf = require('image-size');
+   
     function ImageInfoNode(n) {
         RED.nodes.createNode(this,n);
         
-        var node = this;
+        const node = this;
         
         node.on("input", function(msg) { 
-            var buffer = null;
+         let buffer = null;
+ 
+         function isBase64(v) {
+          if (v instanceof Boolean || typeof v === 'boolean') { return false }
+          var regex = '(?:[A-Za-z0-9+\\/]{4})*(?:[A-Za-z0-9+\\/]{2}==|[A-Za-z0-9+\/]{3}=)?'
+          return (new RegExp('^' + regex + '$', 'gi')).test(v)
+          }
             
             if (Buffer.isBuffer(msg.payload)) {
                 buffer = msg.payload;
@@ -33,8 +37,7 @@
             else {
                 if (typeof msg.payload === 'string') { 
                     if (isBase64(msg.payload)) {
-                        var array = base64js.toByteArray(msg.payload);
-                        buffer = new Buffer(array);
+                         buffer = Buffer.from(msg.payload, 'base64')
                     }
                     else {
                         buffer = Buffer.from(msg.payload);
@@ -52,7 +55,7 @@
                     msg.width = imageInfo.width;
                     msg.height = imageInfo.height;
                     
-                    var status = imageInfo.type + "(" + imageInfo.width + "x" + imageInfo.height + ")";       
+                    const status = imageInfo.type + " (" + imageInfo.width + " x " + imageInfo.height + ")"; 
                     node.status({fill:"blue",shape:"dot",text:status});
                 }
                 catch (err) {
