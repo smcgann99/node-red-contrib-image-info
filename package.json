@@ -3,7 +3,7 @@
     "version"      : "0.1.1",
     "description"  : "A Node Red node to get information about an image",
     "dependencies": {
-       "image-size": "0.6.2"
+       "image-size": "^1.2.0"
     },
     "author": {
         "name": "Bart Butenaers"
